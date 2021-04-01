@@ -32,11 +32,6 @@ func New(port string) (*Server, error) {
 	return &server, nil
 }
 
-func (serv *Server) Close() error {
-	// close all resources
-	return nil
-}
-
 func (serv *Server) Start() {
 	log.Printf("Server running on http://localhost%s", serv.server.Addr)
 	log.Fatal(serv.server.ListenAndServe())

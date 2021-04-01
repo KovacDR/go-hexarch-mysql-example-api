@@ -2,8 +2,6 @@ package main
 
 import (
 	"log"
-	"os"
-	"os/signal"
 
 	"github.com/KovacDR/go-mysql-api/internal/config"
 	"github.com/KovacDR/go-mysql-api/internal/server"
@@ -20,7 +18,7 @@ func main() {
 	}
 	
 	// init database
-	_, err = storage.InitDB(cfg)
+	_, err = storage.New()
 	if err != nil {
 		log.Fatal(err.Error())
 		return
@@ -33,16 +31,5 @@ func main() {
 		return
 	}
 	
-	go serv.Start()
-	defer func() {
-		if err = serv.Close(); err != nil {
-			log.Fatal(err.Error())
-			return
-		}
-	}()
-
-	// wait 'til an interruption
-	c := make(chan os.Signal, 1)
-	signal.Notify(c, os.Interrupt)
-	<- c
+	serv.Start()
 }

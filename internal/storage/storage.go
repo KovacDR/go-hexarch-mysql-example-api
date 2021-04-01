@@ -2,6 +2,8 @@ package storage
 
 import (
 	"database/sql"
+	"log"
+	"sync"
 
 	"github.com/KovacDR/go-mysql-api/internal/config"
 )
@@ -13,17 +15,26 @@ type Storage struct {
 
 var (
 	storage *Storage
+	configuration *config.Config
+	once sync.Once
 )
 
-func InitDB(config *config.Config) (*Storage, error) {
-	db, err := getConnection(config)
+func initDB() {
+	configuration, _ = config.SetConfig()
+	db, err := getConnection(configuration)
 	if err != nil {
-		return &Storage{}, err
+		log.Panic(err.Error())
+		return
 	}
 	
 	storage = &Storage{
 		DB: db,
 	}
+
+}
+
+func New() (*Storage, error) {
+	once.Do(initDB)
 
 	return storage, nil
 }
