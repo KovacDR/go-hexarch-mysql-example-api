@@ -97,10 +97,25 @@ func (ur *UserRepository) Create(ctx context.Context, user *User) error {
 }
 
 func (ur *UserRepository) Update(ctx context.Context, id int, user User) error {
+	u, err := ur.GetOne(ctx, id)
+	if err != nil {
+		return err
+	}
+	
 	q := `
-	SET users username=?, email=?, avatar=?, updated_at=?
+	UPDATE users SET username=?, email=?, avatar=?, updated_at=?
 	WHERE id = ?;
 	`
+
+	if user.Email == "" {
+		user.Email = u.Email
+	}
+	if user.Avatar == "" {
+		user.Avatar = u.Avatar
+	}
+	if user.UserName == "" {
+		user.UserName = u.UserName
+	}
 
 	stmt, err := ur.Storage.DB.PrepareContext(ctx, q)
 	if err != nil {

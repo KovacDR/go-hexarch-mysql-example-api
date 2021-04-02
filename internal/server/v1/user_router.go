@@ -112,7 +112,7 @@ func (ur *UserRouter) UpdateHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	
-	response.JSON(w, r, http.StatusAccepted, response.Map{"updated": true, "user": user})
+	response.JSON(w, r, http.StatusAccepted, response.Map{"updated": true, "udated Fields": user})
 }
 
 func (ur *UserRouter) DeleteHanlder(w http.ResponseWriter, r *http.Request) {
