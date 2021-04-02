@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/KovacDR/go-mysql-api/internal/storage"
+	"github.com/KovacDR/go-mysql-api/pkg/post"
 	"github.com/KovacDR/go-mysql-api/pkg/user"
 	"github.com/go-chi/chi"
 )
@@ -18,7 +19,14 @@ func New() http.Handler {
 		},
 	}
 
+	pr := &PostRouter{
+		Repository: &post.PostRepository{
+			Storage: storage.New(),
+		},
+	}
+
 	r.Mount("/users", ur.Routes())
+	r.Mount("/posts", pr.Routes())
 
 	return r
 }
