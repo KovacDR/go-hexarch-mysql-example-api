@@ -33,8 +33,8 @@ func initDB() {
 
 }
 
-func New() (*Storage, error) {
+func New() (*Storage) {
 	once.Do(initDB)
 
-	return storage, nil
+	return storage
 }
