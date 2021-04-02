@@ -18,7 +18,7 @@ func main() {
 	}
 	
 	// init database
-	_, err = storage.New()
+	storage.New()
 	if err != nil {
 		log.Fatal(err.Error())
 		return
