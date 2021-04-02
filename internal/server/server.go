@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"time"
 
+	v1 "github.com/KovacDR/go-mysql-api/internal/server/v1"
 	"github.com/go-chi/chi"
 	"github.com/rs/cors"
 )
@@ -17,8 +18,11 @@ type Server struct {
 
 func New(port string) (*Server, error) {
 	r := chi.NewRouter()
-	hanlder := cors.AllowAll().Handler(r)
 	port = fmt.Sprintf(":%s", port)
+
+	r.Mount("/api/v1", v1.New())
+
+	hanlder := cors.AllowAll().Handler(r)
 
 	serv := &http.Server{
 		Addr: port,
